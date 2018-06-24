@@ -85,6 +85,10 @@ class Group(BaseGroup):
 # ******************************************************************************************************************** #
 class Player(BasePlayer):
 
+    # Define fields
+
+    earnings = models.FloatField(default=0) # what players earn in Tokens
+
     # add model fields to class player
     # ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     if Constants.certain_choice:
@@ -118,18 +122,22 @@ class Player(BasePlayer):
         # ------------------------------------------------------------------------------------------------------------
         self.option_to_pay = getattr(self, self.choice_to_pay)
 
-        # set player's payoff
+        # set player's payoff and earning
         # ------------------------------------------------------------------------------------------------------------
         if self.option_to_pay == 'A':
             if self.random_draw <= self.participant.vars['mpl_index_to_pay']:
-                self.payoff = Constants.lottery_a_hi
+                self.earnings = Constants.lottery_a_hi
+                self.payoff = self.earnings * Constants.eurosper_token
             else:
-                self.payoff = Constants.lottery_a_lo
+                self.earnings = Constants.lottery_a_lo
+                self.payoff = self.earnings * Constants.eurosper_token
         else:
             if self.random_draw <= self.participant.vars['mpl_index_to_pay']:
-                self.payoff = Constants.lottery_b_hi
+                self.earnings = Constants.lottery_b_hi
+                self.payoff = self.earnings * Constants.eurosper_token
             else:
-                self.payoff = Constants.lottery_b_lo
+                self.earnings = Constants.lottery_b_lo
+                self.payoff = self.earnings * Constants.eurosper_token
 
         # set payoff as global variable
         # ------------------------------------------------------------------------------------------------------------
